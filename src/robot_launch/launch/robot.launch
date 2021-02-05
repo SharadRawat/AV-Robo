@@ -1,0 +1,3 @@
+<launch>
+  <include file="$(find robotic control)/launch/robotic_control.launch"/>
+</launch>
