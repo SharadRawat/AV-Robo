@@ -1,0 +1,3 @@
+<launch>
+  <node pkg="robotic_control" type="RoboticControl.py" name="robotic_control" />
+</launch>
