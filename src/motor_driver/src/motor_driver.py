@@ -4,29 +4,22 @@ import rospy
 import yaml
 from geometry_msgs.msg import PoseStamped
 from geometry_msgs.msg import Twist
-from Adafruit_MotorHAT import Adafruit_MotorHAT, Adafruit_DCMotor
+
+import time
+from RpiMotorLib import rpi_dc_lib
 
 class MotorDriver:
-    def __init__(self, motor_gain, wheel_sep, wheel_radius):
+    def __init__(self, gear_ratio, wheel_sep, wheel_radius):
         self.test_mode = rospy.get_param("~test_mode",False)
         self._wheel_sep = wheel_sep
         self._wheel_rad = wheel_radius
-        self._gear_ratio = 7.5*motor_gain
-        self._max_rpm = 130
-        self._max_pwm = 255
+        self._gear_ratio = gear_ratio
+        self._max_rpm = 180 # 200 With new battery, 180 with 50% used battery, 9V
+        self._max_pwm = 100
 
-        self._mh = Adafruit_MotorHAT(addr=0x60)
-        self._motor_left_num = 1
-        self._motor_right_num = 2
-        self._motor_left = self._mh.getMotor(self._motor_left_num)
-        self._motor_right = self._mh.getMotor(self._motor_right_num)
-        self._motor_left.setSpeed(0)
-        self._motor_right.setSpeed(0)
-        self._motor_left.run(Adafruit_MotorHAT.FORWARD)
-        self._motor_right.run(Adafruit_MotorHAT.FORWARD)
-        self._motor_left.run(Adafruit_MotorHAT.RELEASE)
-        self._motor_right.run(Adafruit_MotorHAT.RELEASE)
-
+        self._motor_left = rpi_dc_lib.L298NMDc(22, 17, 12 ,50 ,True, "motor_one")
+        self._motor_right = rpi_dc_lib.L298NMDc(23, 24, 13 ,50 ,True, "motor_two")
+        
         self.last_msg_time = None
 
         self.motors_on = False
@@ -34,8 +27,9 @@ class MotorDriver:
         
     # recommended for auto-disabling motors on shutdown!
     def turnOffMotors(self):
-        self._mh.getMotor(self._motor_left_num).run(Adafruit_MotorHAT.RELEASE)
-        self._mh.getMotor(self._motor_right_num).run(Adafruit_MotorHAT.RELEASE)
+        print("Cleaning up before stopping the motor.")
+        self._motor_left.cleanup(True)
+        self._motor_right.cleanup(True)
         self.motors_on = False
         
     def drive(self,twist):
@@ -48,19 +42,25 @@ class MotorDriver:
         pwm_right = vel_right*self._max_pwm/self._max_rpm
 
         if (pwm_left < 0):
-            self._motor_left.run(Adafruit_MotorHAT.BACKWARD)
             pwm_left = -pwm_left
+            pwm_left = max(min(pwm_left,255),0)
+            self._motor_left.backward(pwm_left)
+            
         else:
-            self._motor_left.run(Adafruit_MotorHAT.FORWARD)
-        pwm_left = max(min(pwm_left,255),0)
+            pwm_left = max(min(pwm_left,255),0)
+            self._motor_left.forward(pwm_left)
+        
         #if pwm_left < 45:
         #    pwm_left = 0
+        
         if (pwm_right < 0):
-            self._motor_right.run(Adafruit_MotorHAT.BACKWARD)
             pwm_right = -pwm_right
+            pwm_right = max(min(pwm_right,255),0)
+            self._motor_right.backward(pwm_right)
+            
         else:
-            self._motor_right.run(Adafruit_MotorHAT.FORWARD)
-        pwm_right = max(min(pwm_right,255),0)
+            pwm_right = max(min(pwm_right,255),0)
+            self._motor_right.forward(pwm_right)
 
         #if pwm_right < 45:
         #    pwm_right = 0
@@ -68,9 +68,6 @@ class MotorDriver:
         #print "Final pwm is:"
         #print int(pwm_left), int(pwm_right)
         
-        self._motor_left.setSpeed(int(pwm_left))
-        self._motor_right.setSpeed(int(pwm_right))
-
         self.motors_on = True
         
         #rospy.sleep(1)
@@ -81,28 +78,27 @@ class MotorDriver:
 if __name__ == '__main__':
     node = rospy.init_node('motor_driver')
     
-    '''
+    
     param_path = rospy.get_param("~param_path")
     f = open(param_path, 'r')
     params_raw = f.read()
     f.close()
     params = yaml.load(params_raw)
-    motor_gain = params['motor_gain']
+    gear_ratio = params['gear_ratio']
     wheel_sep = params['wheel_sep']
     wheel_radius = params['wheel_radius']
-    '''
     
-    motor_gain = 1.35
-    wheel_sep = 0.03
-    wheel_radius = 0.1
+    
 
-    driver = MotorDriver(motor_gain, wheel_sep, wheel_radius)
+
+    driver = MotorDriver(gear_ratio, wheel_sep, wheel_radius)
     
     rospy.Subscriber('cmd_vel', Twist, driver.drive)
 
     rate = rospy.Rate(10)
 
-    if driver.test_mode:
+    #if driver.test_mode:
+    if True:
         timeout = 1
         rospy.loginfo("[motor_driver]: Test mode on")
     else:
