@@ -37,17 +37,19 @@ class MotorDriver:
         w = twist.angular.z
         vel_left = (x-w*self._wheel_sep/2)/self._wheel_rad*self._gear_ratio
         vel_right = (x+w*self._wheel_sep/2)/self._wheel_rad*self._gear_ratio
+        
+        print(vel_left, vel_right)
 
         pwm_left = vel_left*self._max_pwm/self._max_rpm
         pwm_right = vel_right*self._max_pwm/self._max_rpm
 
         if (pwm_left < 0):
             pwm_left = -pwm_left
-            pwm_left = max(min(pwm_left,255),0)
+            pwm_left = max(min(pwm_left,100),0)
             self._motor_left.backward(pwm_left)
             
         else:
-            pwm_left = max(min(pwm_left,255),0)
+            pwm_left = max(min(pwm_left,100),0)
             self._motor_left.forward(pwm_left)
         
         #if pwm_left < 45:
@@ -55,11 +57,11 @@ class MotorDriver:
         
         if (pwm_right < 0):
             pwm_right = -pwm_right
-            pwm_right = max(min(pwm_right,255),0)
+            pwm_right = max(min(pwm_right,100),0)
             self._motor_right.backward(pwm_right)
             
         else:
-            pwm_right = max(min(pwm_right,255),0)
+            pwm_right = max(min(pwm_right,100),0)
             self._motor_right.forward(pwm_right)
 
         #if pwm_right < 45:
@@ -88,9 +90,6 @@ if __name__ == '__main__':
     wheel_sep = params['wheel_sep']
     wheel_radius = params['wheel_radius']
     
-    
-
-
     driver = MotorDriver(gear_ratio, wheel_sep, wheel_radius)
     
     rospy.Subscriber('cmd_vel', Twist, driver.drive)

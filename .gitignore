@@ -2,3 +2,5 @@ build
 devel
 .catkin*
 /src/geo*
+/src/sen*
+/src/robotic_control/src/__*

@@ -1,3 +1,4 @@
 <launch>
   <include file="$(find robotic_control)/launch/robotic_control.launch"/>
+  <include file="$(find motor_driver)/launch/motor_driver.launch"/>
 </launch>

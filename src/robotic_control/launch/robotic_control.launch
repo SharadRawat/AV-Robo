@@ -1,3 +1,5 @@
 <launch>
-  <node pkg="robotic_control" type="RoboticControl.py" name="robotic_control" />
+  <node pkg="robotic_control" type="RoboticControl.py" name="robotic_control" >
+  <param name="param_path" value="$(find robotic_control)/params/params.yaml"/> 
+  </node> 
 </launch>
