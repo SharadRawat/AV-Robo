@@ -22,9 +22,9 @@ class RoboticControl:
 		diff_time = (self.time_measurement - self.time_init)
 		
 		if diff_time >=1:
-			self.ros_interface.command_velocity(0.3, 10)
+			self.ros_interface.command_velocity(0, 0)
 		else:
-			self.ros_interface.command_velocity(0.3, 10)				
+			self.ros_interface.command_velocity(-5, 0)				
 
 if __name__ == '__main__':
 	try:

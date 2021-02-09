@@ -14,7 +14,7 @@ class MotorDriver:
         self._wheel_sep = wheel_sep
         self._wheel_rad = wheel_radius
         self._gear_ratio = gear_ratio
-        self._max_rpm = 180 # 200 With new battery, 180 with 50% used battery, 9V
+        self._max_rpm = 1800 # 2400 With new battery, 1800 with 50% used battery, 9V
         self._max_pwm = 100
 
         self._motor_left = rpi_dc_lib.L298NMDc(22, 17, 12 ,50 ,True, "motor_one")
