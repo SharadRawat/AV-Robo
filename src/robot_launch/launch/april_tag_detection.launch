@@ -2,7 +2,6 @@
 
 <launch>
   <node pkg="apriltags_ros" type="apriltag_detector_node" name="apriltag_detector" output="screen" ns="camera">
-    <!-- Enter your AprilTag information below. Add all tag IDs that will be used, with their sizes -->
     <rosparam param="tag_descriptions">[
       {id: 0, size: 0.077},
       {id: 1, size: 0.077},
