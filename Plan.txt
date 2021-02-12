@@ -1,0 +1,26 @@
+=================== Phase 1 ==============
+1) Connect Pi to PC using SSH
+2) Interface Motors
+3) Interface Cam
+4) Interface Ultrasonic sensor
+5) Interface IMU
+6) Interface SpeedSensor
+7) Calibrate Cam, Ultrasonic Sensor, IMU and Motors
+================== Phase 2 ================
+0) Make a Ros wrapper for each of the functionality.
+1) Perception using AprilTag
+2) Make a relation between steering and PWM values
+3) Make a Dikstra algo (Planning algo)
+4) Make a control algorithm for longitudinal control.
+5) Impl a KF for IMU values - Also, get the noise covariance for the sensor.
+================== Phase 3 ================
+1) Integrate
+
+
+Future ideas:
+0) Perception: Do what you plan to do with open CV and with actual road. Detect Lane lines and traffic lines and only control to be within lanes.
+1) Perception: Do what's in the nodes.
+2) Planning: A* or RRT
+3) Impl Localization using odom or using map
+4) Track objects using KF
+5) Implement Lateral control.
