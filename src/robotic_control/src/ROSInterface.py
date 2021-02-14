@@ -22,8 +22,9 @@ class ROSInterface:
 		self._imu = None
 		self._t = None
 		self._R = None
-		self._R_cam2body = np.array([[0,0,1,0], [1,0,0,0], [0,1,0,0], [0,0,0,1]])
+		self._R_cam2body = np.array([[0,0,1,0], [-1,0,0,0], [0,-1,0,0], [0,0,0,1]])
 		self._t_cam2body = t_cam2body
+		self._R_ultrasonic2body = np.array([[1,0,0,0], [0,1,0,0], [0,0,1,0], [0,0,0,1]])
 		
 		self._pub = rospy.Publisher("/cmd_vel", Twist, queue_size = 10)
 		rospy.Subscriber("/imu", Imu, self._imu_callback)
