@@ -1,3 +1,7 @@
 [submodule "src/apriltags_ros"]
 	path = src/apriltags_ros
 	url = https://github.com/RIVeR-Lab/apriltags_ros.git
+
+[submodule "src/raspicam_node"]
+	path = src/raspicam_node
+	url = https://github.com/UbiquityRobotics/raspicam_node.git
