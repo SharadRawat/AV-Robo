@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+
+<launch>
+  <node pkg="ultrasonic_sensor" type="read_ultrasonic_sensor.py" name="ultrasonic_sensor" respawn="true" output="screen">
+  </node>
+</launch>
