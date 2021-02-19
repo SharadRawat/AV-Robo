@@ -32,7 +32,7 @@ class ROSInterface:
 		#rospy.Subscriber() 
 
 	def _imu_callback(self, imu):
-		self._imu = np.array([[imu.linear_acceleration.x, imu.linear_acceleration.y, imu.linear_acceleration.z, imu.angular_velocity.z, imu_header.stamp.to_sec()]]).T
+		self._imu = np.array([[imu.linear_acceleration.x, imu.linear_acceleration.y, imu.linear_acceleration.z, imu.angular_velocity.z, imu.header.stamp.to_sec()]]).T
 		self._no_imu = False
 	
 	def get_imu(self):
