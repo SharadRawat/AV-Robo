@@ -11,9 +11,12 @@ class RoboticControl:
 		self.ros_interface = ROSInterface(t_cam2body)
 		
 		self.time_init = -1.0
+		max_speed = None
+		max_omega = None
+		#self.motor_controller = MotorController(max_speed, max_omega)
 		
 	def process_measurements(self):
-		#cam_measurements = self.ros_interface.get_cam_measurements()
+		cam_measurements = self.ros_interface.get_cam_measurements()
 		imu_measurements = self.ros_interface.get_imu()
 		
 		if self.time_init == -1.0:

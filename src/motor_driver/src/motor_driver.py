@@ -96,8 +96,7 @@ if __name__ == '__main__':
 
     rate = rospy.Rate(10)
 
-    #if driver.test_mode:
-    if True:
+    if driver.test_mode:
         timeout = 1
         rospy.loginfo("[motor_driver]: Test mode on")
     else:
