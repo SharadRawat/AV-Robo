@@ -6,6 +6,8 @@ import yaml
 import numpy as np
 from ROSInterface import ROSInterface
 
+from MotorController import MotorController
+
 class RoboticControl:
 	def __init__(self, t_cam2body):
 		self.ros_interface = ROSInterface(t_cam2body)
@@ -13,7 +15,7 @@ class RoboticControl:
 		self.time_init = -1.0
 		max_speed = None
 		max_omega = None
-		#self.motor_controller = MotorController(max_speed, max_omega)
+		self.motor_controller = MotorController(max_speed, max_omega)
 		
 	def process_measurements(self):
 		cam_measurements = self.ros_interface.get_cam_measurements()
@@ -25,9 +27,9 @@ class RoboticControl:
 		diff_time = (self.time_measurement - self.time_init)
 		
 		if diff_time >=1:
-			self.ros_interface.command_velocity(0, 0)
+			self.ros_interface.command_velocity(1, 10)
 		else:
-			self.ros_interface.command_velocity(-5, 0)				
+			self.ros_interface.command_velocity(-5, 3)				
 
 if __name__ == '__main__':
 	try:
