@@ -52,7 +52,7 @@ def main(args):
 	rospy.init_node('imu')
 	imu_reader = ImuReader()
 	imu_pub = rospy.Publisher('imu', Imu, queue_size=10)
-	rate = rospy.Rate(imu_reader._rate)
+	rate = rospy.Rate(60)
 	while not rospy.is_shutdown():
 		(accel, omega, bearing) = imu_reader.read_from_imu()
 		imu_msg = imu_reader.fill_imu_msg(accel, omega)

@@ -27,7 +27,7 @@ def main(args):
 		dist = dist[len(dist)-10:]
 	    dist += distance()
 	    distance_msg = statistics.mean(dist)
-	    rospy.loginfo(distance_msg)
+	    #rospy.loginfo(distance_msg)
 	    imu_pub.publish(distance_msg)
 	    count +=1
 	    rate.sleep()
