@@ -17,31 +17,27 @@ class RoboticControl:
 		max_omega = 1.6 // Param
 		self.motor_controller = MotorController(max_speed, max_omega)
 
-	def switch_to_state(self, state):
-        self.current_state = state
-
 	def process_measurements(self):
 		cam_measurements = self.ros_interface.get_cam_measurements()
 		imu_measurements = self.ros_interface.get_imu()
 
 		if cam_measurements != None:
-    		print("Cam measurements: ", cam_measurements)
+			print("Cam measurements: ", cam_measurements)
 			state = np.array([0.0, 0.0, 0.0])
-            goal = np.array([meas[0], -meas[1], meas[2]])
+			goal = np.array([meas[0], -meas[1], meas[2]])
 
 			vw = self.diff_drive_controller.compute_vel(state, goal)
 			print("Computed command vel: ", vw)
 
 			if vw[2] == False:
-    			self.ros_interface.command_velocity(vw[0], vw[1])
+				self.ros_interface.command_velocity(vw[0], vw[1])
 
 			else:
-    			self.ros_interface.command_velocity(0, 0)
+				self.ros_interface.command_velocity(0, 0)
 
 			return
 
 		else:
-
 			print("No Measurement.")
 			return
 
