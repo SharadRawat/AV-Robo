@@ -4,4 +4,4 @@
 
 [submodule "src/raspicam_node"]
 	path = src/raspicam_node
-	url = https://github.com/UbiquityRobotics/raspicam_node.git
+	url = https://github.com/fpasteau/raspicam_node.git
