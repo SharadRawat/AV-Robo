@@ -21,6 +21,6 @@
       {id: 15, size: 0.077},
       ]
     </rosparam>
-    <remap from="image_rect" to="image_raw"/>
+    <remap from="/camera/image_rect" to="/raspicam_node/image"/>
   </node>
 </launch>
