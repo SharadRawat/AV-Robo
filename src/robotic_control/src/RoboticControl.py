@@ -18,19 +18,17 @@ class RoboticControl:
 		self.motor_controller = MotorController(max_speed, max_omega)
 
 	def process_measurements(self):
-		print("Processing Measurements")
 		cam_measurements = self.ros_interface.get_cam_measurements()
 		imu_measurements = self.ros_interface.get_imu()
 		
 		#print("imu measurements are present", imu_measurements)
-		
 		
 		if cam_measurements != None:
 			print("Cam measurements: ", cam_measurements)
 			state = np.array([0.0, 0.0, 0.0])
 			goal = np.array([cam_measurements[0], -cam_measurements[1], cam_measurements[2]])
 
-			vw = self.diff_drive_controller.compute_vel(state, goal)
+			vw = self.motor_controller.compute_vel(state, goal)
 			print("Computed command vel: ", vw)
 
 			if vw[2] == False:
@@ -49,9 +47,7 @@ class RoboticControl:
 
 if __name__ == '__main__':
 	try:
-		
 		rospy.init_node('robotic_control')
-		
 		
 		param_path = rospy.get_param("~param_path")
 		f = open(param_path, 'r')
@@ -59,9 +55,13 @@ if __name__ == '__main__':
 		f.close()
 
 		params = yaml.load(params_raw)
+		
 		t_cam2body = params['t_cam2body']
 		
-		robotic_control = RoboticControl(t_cam2body)
+		t_cam2body_as_np_array = np.asarray(t_cam2body, dtype='float64')
+		
+		print("t_cam2body_as_np_array shape", t_cam2body_as_np_array.shape)
+		robotic_control = RoboticControl(t_cam2body_as_np_array)
 
 		rate_of_measurement = rospy.Rate(60)
 		while not rospy.is_shutdown():

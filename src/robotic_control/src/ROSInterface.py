@@ -94,7 +94,7 @@ class ROSInterface:
 		dx = self._t[0,0]
 		dy = self._t[1,0]
 		
-		return [[dx,dy, self._angle, self._marker_num]]
+		return [dx,dy, self._angle, self._marker_num]
 			
 	
 	def command_velocity(self, vx, wz):
