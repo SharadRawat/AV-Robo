@@ -49,32 +49,11 @@ class ROSInterface:
 			return
 		
 		self._R = np.dot(np.dot(self._R_cam2body, self._R), self._R_tag2bot)
-		#print("R from tags", type(self._R))
-		#print("R from cam geometry", type(self._R_cam2body))
-		#print("t from tags", type(self._t))
-		self._t = np.array(self._t)
-		#print("t from tags", type(self._t))
-		#print("t from cam geometry", type(self._t_cam2body))
-		
-		temp = np.dot(self._R_cam2body, self._t)
-		
-		print("temp", temp)
-		print("temp shape", temp.shape)
-		print("temp type", type(temp))
-		print("temp type", temp.dtype)
-		
-		print("self._t_cam2body", self._t_cam2body)
-		print("self._t_cam2body shape", self._t_cam2body.shape)
-		print("self._t_cam2body type", type(self._t_cam2body))
-		print("self._t_cam2body", self._t_cam2body.dtype)
-		
-		self._t =  temp + self._t_cam2body
+		self._t = np.array(self._t)		
+		self._t =  np.dot(self._R_cam2body, self._t) + self._t_cam2body
 		self._marker_num = pose_array.detections[0].id
 		
-		print(self._no_detection)
 		self._no_detection = False
-		print(self._no_detection)
-
 	
 	def _imu_callback(self, imu):
 		self._imu = np.array([[imu.linear_acceleration.x, imu.linear_acceleration.y, imu.linear_acceleration.z, imu.angular_velocity.z, imu.header.stamp.to_sec()]]).T

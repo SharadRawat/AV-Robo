@@ -14,7 +14,7 @@ class MotorDriver:
         self._wheel_sep = wheel_sep
         self._wheel_rad = wheel_radius
         self._gear_ratio = gear_ratio
-        self._max_rpm = 1800 # 2400 With new battery, 1800 with 50% used battery, 9V
+        self._max_rpm = 180 # 2400 With new battery, 1800 with 50% used battery, 9V
         self._max_pwm = 100
 
         self._motor_left = rpi_dc_lib.L298NMDc(22, 17, 12 ,50 ,True, "motor_one")
@@ -38,6 +38,7 @@ class MotorDriver:
         vel_left = (x-w*self._wheel_sep/2)/self._wheel_rad*self._gear_ratio
         vel_right = (x+w*self._wheel_sep/2)/self._wheel_rad*self._gear_ratio
         
+        print("Printing Velocities to the")
         print(vel_left, vel_right)
 
         pwm_left = vel_left*self._max_pwm/self._max_rpm
@@ -94,7 +95,7 @@ if __name__ == '__main__':
     
     rospy.Subscriber('cmd_vel', Twist, driver.drive)
 
-    rate = rospy.Rate(10)
+    rate = rospy.Rate(60)
 
     if driver.test_mode:
         timeout = 1

@@ -24,7 +24,7 @@ class RoboticControl:
 		#print("imu measurements are present", imu_measurements)
 		
 		if cam_measurements != None:
-			print("Cam measurements: ", cam_measurements)
+			#print("Cam measurements: ", cam_measurements)
 			state = np.array([0.0, 0.0, 0.0])
 			goal = np.array([cam_measurements[0], -cam_measurements[1], cam_measurements[2]])
 
